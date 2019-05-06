@@ -15,7 +15,7 @@ public class XpathTrainingTest {
 
     @Before
     public void setUp() {
-        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "chromedriver74.exe");
         //1. otvorit prehliadac - potrebujeme dotiahnut kniznicu Seleniumu:pom.xml dependencies + TAB
         driver = new ChromeDriver();
         //2. otvorit stranku - do zatvorky metody .get vlozime adresu do uvodzoviek
