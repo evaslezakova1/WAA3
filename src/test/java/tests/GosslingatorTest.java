@@ -73,6 +73,7 @@ public class GosslingatorTest {
         // zvysim i o 1: i++)
         // do tela vlozim prikaz, ktory sa ma cyklit: {addRyanButton.click();}
         // skratka je fori + tab
+        Assert.assertEquals(0, driver.findElements(By.cssSelector("img")).size());
         for (int i = 0; i < 50; i++) {
             addRyanButton.click();
             String actualNrRyans = driver.findElement(By.id("ryanCounter")).getText();
@@ -88,6 +89,7 @@ public class GosslingatorTest {
             } else {
                 Assert.assertEquals("ryans", actualLabelOfRyan);
             }
+            Assert.assertEquals(i+1, driver.findElements(By.cssSelector("img")).size());
         }
         String alertMessage = driver.findElement(By.cssSelector("h1.tooManyRyans")).getText();
         System.out.println(alertMessage);
@@ -95,9 +97,11 @@ public class GosslingatorTest {
                 "RYANS\n" +
                 "IS TOO DAMN\n" +
                 "HIGH", alertMessage);
+        driver.findElement(By.cssSelector("img")).click();
     }
+
     @Test
-    public void usingWhileCycle(){
+    public void usingWhileCycle() {
         String actualNrRyans = driver.findElement(By.id("ryanCounter")).getText();
         int clicksLimit = 30;
         int clicks = 0;
@@ -105,11 +109,17 @@ public class GosslingatorTest {
         // pre while sa rozhodneme, ak nevieme jednoznacne povedat, do kedy by for bezal
         // zaroven = &&
         // alebo = ||
-        while (!actualNrRyans.equals("50")&& clicks < clicksLimit){
+        while (!actualNrRyans.equals("50") && clicks < clicksLimit) {
             addRyanButton.click();
             actualNrRyans = driver.findElement(By.id("ryanCounter")).getText();
             clicks++;
         }
+    }
 
+    @Test
+    public void itShouldDislpayNoRyanOnPageOpen() {
+        // findElements najde vsetky elementy splnajuce podmienku a vypise ich do Listu
+        // .size() je velkost zoznamu - kolko elementov je v Liste
+        Assert.assertEquals(0, driver.findElements(By.cssSelector("img")).size());
     }
 }
