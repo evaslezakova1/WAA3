@@ -8,41 +8,35 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class GosslingatorTest extends TestBase {
-    private WebElement addRyanButton;
+
 
     @Before
     public void openPage() {
         driver.get(BASE_URL + "/gosslingator.php");
-        addRyanButton = driver.findElement(By.id("addRyan"));
     }
 
     @Test
     public void itShouldAddOneRyan() {
         //3. kliknut na tlacidlo pridat
         // - v prvej casti si najdem element a v druhej zadam prikaz
-        addRyanButton.click();
-        driver.findElement(By.id("removeRyan")).click();
-        addRyanButton.click();
+        addRyan();
 
         //4. overit vysledok
-        Assert.assertEquals("1", driver.findElement(By.cssSelector("div.ryan-counter h2")).getText());
-        Assert.assertEquals("ryan", driver.findElement(By.cssSelector("div.ryan-counter h3")).getText());
+        Assert.assertEquals("1", getRyanCountLabel());
+        Assert.assertEquals("ryan", getRyanTitleLable());
     }
 
     @Test
     public void itShouldAddTwoRyans() {
         //3. kliknut na tlacidlo pridat
         // - v prvej casti si najdem element a v druhej zadam prikaz
-        addRyanButton.click();
-        addRyanButton.click();
-
+        addRyan();
+        addRyan();
         //4. overit vysledok
-        String ryanCount = driver.findElement(By.cssSelector("div.ryan-counter h2")).getText();
-        String ryanTitle = driver.findElement(By.cssSelector("div.ryan-counter h3")).getText();
-        Assert.assertEquals("2", ryanCount);
-        System.out.println("Number of Ryans: " + ryanCount);
-        System.out.println(ryanTitle);
-        Assert.assertEquals("ryans", ryanTitle);
+        Assert.assertEquals("2", getRyanCountLabel());
+        System.out.println("Number of Ryans: " + getRyanCountLabel());
+        System.out.println(getRyanTitleLable());
+        Assert.assertEquals("ryans", getRyanTitleLable());
     }
 
     @Test
@@ -60,23 +54,22 @@ public class GosslingatorTest extends TestBase {
         // zvysim i o 1: i++)
         // do tela vlozim prikaz, ktory sa ma cyklit: {addRyanButton.click();}
         // skratka je fori + tab
-        Assert.assertEquals(0, driver.findElements(By.cssSelector("img")).size());
+        Assert.assertEquals(0, getNumberOfRyanImages());
         for (int i = 0; i < 50; i++) {
-            addRyanButton.click();
-            String actualNrRyans = driver.findElement(By.id("ryanCounter")).getText();
+            addRyan();
+
             //musim int zmenit na string
-            Assert.assertEquals(String.valueOf(i + 1), actualNrRyans);
-            String actualLabelOfRyan = driver.findElement(By.cssSelector("div.ryan-counter h3")).getText();
+            Assert.assertEquals(String.valueOf(i + 1), getRyanCounterNumber());
             //if - do zatvorky dam podmienku a do {} vlozim akciu
             // ak chce pokracovat s else, tak hned else a do {} vlozim akciu
             //alternativa podmienky (i + 1 == 1)
             if (i < 1) {
-                Assert.assertEquals("ryan", actualLabelOfRyan);
+                Assert.assertEquals("ryan", getRyanTitleLable());
                 //alternativa podmienky (i + 1 >= 2) -> samostatne if nie vetvene
             } else {
-                Assert.assertEquals("ryans", actualLabelOfRyan);
+                Assert.assertEquals("ryans", getRyanTitleLable());
             }
-            Assert.assertEquals(i+1, driver.findElements(By.cssSelector("img")).size());
+            Assert.assertEquals(i+1, getNumberOfRyanImages());
         }
         String alertMessage = driver.findElement(By.cssSelector("h1.tooManyRyans")).getText();
         System.out.println(alertMessage);
@@ -84,21 +77,19 @@ public class GosslingatorTest extends TestBase {
                 "RYANS\n" +
                 "IS TOO DAMN\n" +
                 "HIGH", alertMessage);
-        driver.findElement(By.cssSelector("img")).click();
+
     }
 
     @Test
     public void usingWhileCycle() {
-        String actualNrRyans = driver.findElement(By.id("ryanCounter")).getText();
         int clicksLimit = 30;
         int clicks = 0;
         // while cyclus - vykona sa vzdy, ak je podmienka true
         // pre while sa rozhodneme, ak nevieme jednoznacne povedat, do kedy by for bezal
         // zaroven = &&
         // alebo = ||
-        while (!actualNrRyans.equals("50") && clicks < clicksLimit) {
-            addRyanButton.click();
-            actualNrRyans = driver.findElement(By.id("ryanCounter")).getText();
+        while (!getRyanCounterNumber().equals("50") && clicks < clicksLimit) {
+            addRyan();
             clicks++;
         }
     }
@@ -107,6 +98,30 @@ public class GosslingatorTest extends TestBase {
     public void itShouldDislpayNoRyanOnPageOpen() {
         // findElements najde vsetky elementy splnajuce podmienku a vypise ich do Listu
         // .size() je velkost zoznamu - kolko elementov je v Liste
-        Assert.assertEquals(0, driver.findElements(By.cssSelector("img")).size());
+        Assert.assertEquals(0, getNumberOfRyanImages());
+    }
+
+    //vytvaranie metod
+    //private - iba v tejto triede sa da pouzit
+    //void - metoda nevracia ziadnu hodnotu
+    private void addRyan(){
+        WebElement ryanButton =  driver.findElement(By.id("addRyan"));
+        ryanButton.click();
+    }
+
+    private String getRyanCounterNumber(){
+        return driver.findElement(By.id("ryanCounter")).getText();
+    }
+
+    private String getRyanCountLabel(){
+        return driver.findElement(By.cssSelector("div.ryan-counter h2")).getText();
+    }
+
+    private String getRyanTitleLable(){
+        return driver.findElement(By.cssSelector("div.ryan-counter h3")).getText();
+    }
+
+    private int getNumberOfRyanImages(){
+        return driver.findElements(By.cssSelector("img")).size();
     }
 }
