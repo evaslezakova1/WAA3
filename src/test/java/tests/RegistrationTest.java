@@ -1,31 +1,18 @@
 package tests;
 
+import base.TestBase;
 import com.devskiller.jfairy.Fairy;
 import com.devskiller.jfairy.producer.person.Person;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-public class RegistrationTest {
-    private WebDriver driver;
+public class RegistrationTest extends TestBase {
 
     @Before
-    public void setUp() {
-        System.setProperty("webdriver.chrome.driver", "chromedriver74.exe");
-        //1. otvorit prehliadac - potrebujeme dotiahnut kniznicu Seleniumu:pom.xml dependencies + TAB
-        driver = new ChromeDriver();
-        //2. otvorit stranku - do zatvorky metody .get vlozime adresu do uvodzoviek
-        driver.get("http://localhost:81/registracia.php");
-    }
-
-    @After
-    public void tearDown() {
-        driver.close();
-        driver.quit();
+    public void openPage() {
+        driver.get(BASE_URL + "/registracia.php");
     }
 
     @Test

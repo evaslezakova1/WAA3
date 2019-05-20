@@ -1,29 +1,16 @@
 package tests;
 
-import org.junit.After;
+import base.TestBase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-public class ZenaAleboMuz {
-    private WebDriver driver;
+public class ZenaAleboMuz extends TestBase {
 
     @Before
-    public void setUp() {
-        System.setProperty("webdriver.chrome.driver", "chromedriver74.exe");
-        //1. otvorit prehliadac - potrebujeme dotiahnut kniznicu Seleniumu:pom.xml dependencies + TAB
-        driver = new ChromeDriver();
-        //2. otvorit stranku - do zatvorky metody .get vlozime adresu do uvodzoviek
-        driver.get("http://localhost:81/zenaalebomuz.php");
-    }
-
-    @After
-    public void tearDown() {
-        driver.close();
-        driver.quit();
+    public void openPage() {
+        driver.get(BASE_URL + "/zenaalebomuz.php");
     }
 
     @Test

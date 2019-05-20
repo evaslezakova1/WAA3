@@ -1,35 +1,21 @@
 package tests;
 
-import org.junit.After;
+import base.TestBase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FellowshipTest {
-    private WebDriver driver;
+public class FellowshipTest extends TestBase {
 
-    @Before
-    public void setUp() {
-        System.setProperty("webdriver.chrome.driver", "chromedriver74.exe");
-        //1. otvorit prehliadac - potrebujeme dotiahnut kniznicu Seleniumu:pom.xml dependencies + TAB
-        driver = new ChromeDriver();
-        //2. otvorit stranku - do zatvorky metody .get vlozime adresu do uvodzoviek
-        driver.get("http://localhost:81/fellowship.php");
-    }
-
-    @After
-    public void tearDown() {
-        driver.close();
-        driver.quit();
-    }
+        @Before
+        public void openPage() {
+            driver.get(BASE_URL + "/fellowship.php");
+        }
 
     @Test
     public void itShouldContainNameForEachFellow() {
