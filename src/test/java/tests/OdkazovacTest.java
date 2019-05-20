@@ -19,67 +19,71 @@ public class OdkazovacTest extends TestBase {
     }
 
     @Test
-    public void itShouldAddNewMessage() {
-        Integer pocetOdkazov = Integer.valueOf(driver.findElement(By.cssSelector("h3.sin-header span")).getText());
+    public void itShouldAddNewMessage() throws InterruptedException {
+        int pocetOdkazov = Integer.valueOf(driver.findElement(By.cssSelector("h3.sin-header span")).getText());
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Fairy fairy = Fairy.create();
         Person person = fairy.person();
         String title = "Titulok " + timestamp;
-        //String where = "Komu";
+        String author = person.getFirstName() + " " + person.getLastName();
         String body = "Sem by isiel text";
-        WebElement button = driver.findElement(By.xpath("//button[contains(text(), '+')]"));
+
+        enterNoteData(title, author, body);
+        submitNote();
 
         //ul.list-of-sins li:last-child
-        driver.findElement(By.xpath("//input[1]")).sendKeys(title);
-        driver.findElement(By.xpath("//input[2]")).sendKeys(person.getFirstName() + " " + person.getLastName());
-        driver.findElement(By.xpath("//textarea")).sendKeys(body);
-        button.click();
-
-        WebElement listItem = driver.findElement(By.cssSelector("ul.list-of-sins > li:last-child"));
-        //overim ze sa pridal novy zaznam do zoznamu
-        Assert.assertTrue(listItem.getText().contains(title));
-        //overenie linku
-        Assert.assertTrue(listItem.findElement(By.cssSelector("div.description a")).isDisplayed());
-        Assert.assertEquals("detail", listItem.findElement(By.cssSelector("div.description a")).getText());
-        Assert.assertEquals(
-                Integer.valueOf(pocetOdkazov + 1),
-                Integer.valueOf(driver.findElement(By.cssSelector("h3.sin-header span")).getText())
-        );
-        listItem.click();
+        checkNoteInList(title, pocetOdkazov);
+        getLastNoteFromList().click();
         //overim detail zaznamu
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Thread.sleep(1000);
 
-        WebElement detail = driver.findElement(By.cssSelector("div.content"));
-        Assert.assertEquals(title, detail.findElement(By.cssSelector("h4.title")).getText());
-        Assert.assertEquals(person.getFirstName() + " " + person.getLastName(), detail.findElement(By.cssSelector("h4.recipent")).getText());
-        Assert.assertEquals(body, detail.findElement(By.cssSelector("p")).getText());
+        checkNoteDetail(title, author, body);
     }
 
     @Test
     public void itShouldAddNewMessageWithHashtaghs() throws InterruptedException {
-        Integer pocetOdkazov = Integer.valueOf(driver.findElement(By.cssSelector("h3.sin-header span")).getText());
+        int pocetOdkazov = Integer.valueOf(driver.findElement(By.cssSelector("h3.sin-header span")).getText());
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String title = "Titulok s Hashtaghmi " + timestamp;
         Fairy fairy = Fairy.create();
         Person person = fairy.person();
+        String author = person.getFirstName() + " " + person.getLastName();
         String body = "Sem by isiel text pre hestegove spravy";
-        WebElement button = driver.findElement(By.xpath("//button[contains(text(), '+')]"));
 
+        enterNoteData(title, author, body);
+        addTags();
+        submitNote();
+        checkNoteInList(title, pocetOdkazov);
+        getLastNoteFromList().click();
+        //overim detail zaznamu
+        Thread.sleep(1000);
+        checkNoteDetail(title, author, body);
+
+    }
+
+    private void enterNoteData(String title, String author, String body) {
         driver.findElement(By.xpath("//input[1]")).sendKeys(title);
-        driver.findElement(By.xpath("//input[2]")).sendKeys(person.getFirstName() + " " + person.getLastName());
+        driver.findElement(By.xpath("//input[2]")).sendKeys(author);
         driver.findElement(By.xpath("//textarea")).sendKeys(body);
-        driver.findElement(By.cssSelector("input[value='sport']")).click();
-        driver.findElement(By.cssSelector("input[value='jedlo']")).click();
-        driver.findElement(By.cssSelector("input[value='moda']")).click();
-        driver.findElement(By.cssSelector("input[value='praca']")).click();
-        driver.findElement(By.cssSelector("input[value='martin jakubec']")).click();
-        button.click();
+    }
 
-        WebElement listItem = driver.findElement(By.cssSelector("ul.list-of-sins > li:last-child"));
+    private void submitNote() {
+        driver.findElement(By.xpath("//button[contains(text(), '+')]")).click();
+    }
+
+    private WebElement getLastNoteFromList() {
+        return driver.findElement(By.cssSelector("ul.list-of-sins > li:last-child"));
+    }
+
+    private void checkNoteDetail(String title, String author, String body) {
+        WebElement detail = driver.findElement(By.cssSelector("div.content"));
+        Assert.assertEquals(title, detail.findElement(By.cssSelector("h4.title")).getText());
+        Assert.assertEquals(author, detail.findElement(By.cssSelector("h4.recipent")).getText());
+        Assert.assertEquals(body, detail.findElement(By.cssSelector("p")).getText());
+    }
+
+    private void checkNoteInList(String title, int pocetOdkazov){
+        WebElement listItem = getLastNoteFromList();
         //overim ze sa pridal novy zaznam do zoznamu
         Assert.assertTrue(listItem.getText().contains(title));
         //overenie linku
@@ -89,19 +93,14 @@ public class OdkazovacTest extends TestBase {
                 Integer.valueOf(pocetOdkazov + 1),
                 Integer.valueOf(driver.findElement(By.cssSelector("h3.sin-header span")).getText())
         );
-        listItem.click();
-        //overim detail zaznamu
-
-        Thread.sleep(1000);
-
-        WebElement detail = driver.findElement(By.cssSelector("div.content"));
-        Assert.assertEquals(title, detail.findElement(By.cssSelector("h4.title")).getText());
-        Assert.assertEquals(person.getFirstName() + " " + person.getLastName(), detail.findElement(By.cssSelector("h4.recipent")).getText());
-        Assert.assertEquals(body, detail.findElement(By.cssSelector("p")).getText());
-
     }
 
-
+    private void addTags(){
+        String[] selectHashtagh = {"sport", "jedlo", "moda", "praca", "martin jakubec"};
+        for (String s : selectHashtagh) {
+            driver.findElement(By.cssSelector("input[value='" + s + "']"));
+        }
+    }
 }
 
 
