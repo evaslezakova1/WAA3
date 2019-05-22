@@ -21,10 +21,9 @@ public class OdkazovacTest extends TestBase {
     @Test
     public void itShouldAddNewMessage() throws InterruptedException {
         int pocetOdkazov = Integer.valueOf(driver.findElement(By.cssSelector("h3.sin-header span")).getText());
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Fairy fairy = Fairy.create();
         Person person = fairy.person();
-        String title = "Titulok " + timestamp;
+        String title = titleWithTimestamp();
         String author = person.getFirstName() + " " + person.getLastName();
         String body = "Sem by isiel text";
 
@@ -43,8 +42,7 @@ public class OdkazovacTest extends TestBase {
     @Test
     public void itShouldAddNewMessageWithHashtaghs() throws InterruptedException {
         int pocetOdkazov = Integer.valueOf(driver.findElement(By.cssSelector("h3.sin-header span")).getText());
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        String title = "Titulok s Hashtaghmi " + timestamp;
+        String title = titleWithTimestamp();
         Fairy fairy = Fairy.create();
         Person person = fairy.person();
         String author = person.getFirstName() + " " + person.getLastName();
@@ -77,29 +75,38 @@ public class OdkazovacTest extends TestBase {
 
     private void checkNoteDetail(String title, String author, String body) {
         WebElement detail = driver.findElement(By.cssSelector("div.content"));
-        Assert.assertEquals(title, detail.findElement(By.cssSelector("h4.title")).getText());
-        Assert.assertEquals(author, detail.findElement(By.cssSelector("h4.recipent")).getText());
-        Assert.assertEquals(body, detail.findElement(By.cssSelector("p")).getText());
+        Assert.assertEquals(title, getDescriptionLink(detail, "h4.title").getText());
+        Assert.assertEquals(author, getDescriptionLink(detail, "h4.recipent").getText());
+        Assert.assertEquals(body, getDescriptionLink(detail, "p").getText());
     }
 
-    private void checkNoteInList(String title, int pocetOdkazov){
+    private void checkNoteInList(String title, int pocetOdkazov) {
         WebElement listItem = getLastNoteFromList();
         //overim ze sa pridal novy zaznam do zoznamu
         Assert.assertTrue(listItem.getText().contains(title));
         //overenie linku
-        Assert.assertTrue(listItem.findElement(By.cssSelector("div.description a")).isDisplayed());
-        Assert.assertEquals("detail", listItem.findElement(By.cssSelector("div.description a")).getText());
+        Assert.assertTrue(getDescriptionLink(listItem, "div.description a").isDisplayed());
+        Assert.assertEquals("detail", getDescriptionLink(listItem, "div.description a").getText());
         Assert.assertEquals(
                 Integer.valueOf(pocetOdkazov + 1),
                 Integer.valueOf(driver.findElement(By.cssSelector("h3.sin-header span")).getText())
         );
     }
 
-    private void addTags(){
+    private WebElement getDescriptionLink(WebElement listItem, String s) {
+        return listItem.findElement(By.cssSelector(s));
+    }
+
+    private void addTags() {
         String[] selectHashtagh = {"sport", "jedlo", "moda", "praca", "martin jakubec"};
         for (String s : selectHashtagh) {
             driver.findElement(By.cssSelector("input[value='" + s + "']"));
         }
+    }
+
+    private String titleWithTimestamp() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        return "Titulok s Hashtaghmi " + timestamp;
     }
 }
 

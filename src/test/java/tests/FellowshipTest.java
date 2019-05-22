@@ -19,12 +19,12 @@ public class FellowshipTest extends TestBase {
 
     @Test
     public void itShouldContainNameForEachFellow() {
-        List<WebElement> listOfFellows = driver.findElements(By.cssSelector("ul.list-of-fellows li"));
+        List<WebElement> listOfFellows = returnList();
         //zadefinujem si novy String zoznam AraryList
         List<String> fellowNames = new ArrayList<String>();
         for (WebElement listOfFellow : listOfFellows) {
             //ziskam z elementu mena
-            String names = listOfFellow.findElement(By.cssSelector("h1")).getText();
+            String names = nameOfFellows(listOfFellow);
             Assert.assertFalse(names.isEmpty());
             //naplnim ArrayList menami z elementu
             fellowNames.add(names);
@@ -37,16 +37,16 @@ public class FellowshipTest extends TestBase {
     @Test
     public void domaca() {
         //overit inicialny pocet bodov 25
-        String initialPoints = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div/h2")).getText();
+        String initialPoints = getInitialPoints("//*[@id=\"app\"]/div/div/div/h2");
         Assert.assertEquals("25", initialPoints);
         Integer initialPointsNumber = Integer.valueOf(initialPoints);
         //overit, ze kazdy fellow ma zobrazeny a vyplneny pocet bodov
-        List<WebElement> listOfFellows = driver.findElements(By.cssSelector("ul.list-of-fellows li"));
+        List<WebElement> listOfFellows = returnList();
         //zoznam tych, co si ma vybrat
         List<String> chooseYourFellow = Arrays.asList("Frodo", "Samwise", "Legolas", "Aragorn", "Boromir", "Meriadoc");
 
         for (WebElement listOfFellow : listOfFellows) {
-            String names = listOfFellow.findElement(By.cssSelector("h1")).getText();
+            String names = nameOfFellows(listOfFellow);
             String points = listOfFellow.findElement(By.cssSelector("div[class='fellow-points col-md-6'] h2")).getText();
             Assert.assertFalse(points.isEmpty());
             Integer pointsNumber = Integer.valueOf(points);
@@ -55,11 +55,11 @@ public class FellowshipTest extends TestBase {
                 listOfFellow.click();
                 if (names.equals("Meriadoc")) {
                     //uz sa minuli vsetky body, overi hlasku Complete
-                    String newPoints = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div/h3")).getText();
+                    String newPoints = getInitialPoints("//*[@id=\"app\"]/div/div/div/h3");
                     Assert.assertEquals("Complete", newPoints);
                 } else {
                     //body sa este neminuli, tak pokracuje dalej vo vyberani
-                    String newPoints = driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div/h2")).getText();
+                    String newPoints = getInitialPoints("//*[@id=\"app\"]/div/div/div/h2");
                     Integer newPointsNumber = Integer.valueOf(newPoints);
                     Integer result = initialPointsNumber - pointsNumber;
                     Assert.assertEquals(newPointsNumber, result);
@@ -68,4 +68,19 @@ public class FellowshipTest extends TestBase {
             }
         }
     }
+
+    private String getInitialPoints(String s) {
+        return driver.findElement(By.xpath(s)).getText();
+    }
+
+    private List<WebElement> returnList(){
+            return driver.findElements(By.cssSelector("ul.list-of-fellows li"));
+    }
+
+    private String nameOfFellows(WebElement listOfFellow){
+            return listOfFellow.findElement(By.cssSelector("h1")).getText();
+    }
+
+
+
 }

@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+
 import java.util.List;
 
 public class RandomTableTest extends TestBase {
@@ -25,8 +26,7 @@ public class RandomTableTest extends TestBase {
 
     @Test
     public void listOfAllRowInTable() {
-        List<WebElement> tableRows = driver.findElements(By.cssSelector("table tbody tr"));
-        for (WebElement tableRow : tableRows) {
+        for (WebElement tableRow : returnList()) {
             Assert.assertFalse(tableRow.getText().isEmpty());
 
         }
@@ -38,9 +38,13 @@ public class RandomTableTest extends TestBase {
 //        for (WebElement tableRow : tableRows) {
 //            Assert.assertFalse(tableRow.getText().isEmpty());
 //        }
-        List<WebElement> tableRows = driver.findElements(By.cssSelector("table tbody tr"));
+        List<WebElement> tableRows = returnList();
         for (WebElement tableRow : tableRows) {
             Assert.assertFalse(tableRow.findElement(By.xpath("//td[2]")).getText().isEmpty());
         }
+    }
+
+    private List<WebElement> returnList() {
+        return driver.findElements(By.cssSelector("table tbody tr"));
     }
 }

@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 public class XpathTrainingTest extends TestBase {
+    private String chosen = "you have chosen ";
 
     @Before
     public void openPage() {
@@ -20,10 +21,8 @@ public class XpathTrainingTest extends TestBase {
     @Test
     public void clickOnSecond() {
         String button = "Second button";
-        driver.findElement(By.xpath("//button[contains(text(),'" + button + "')]")).click();
-
-        String actualMessage = driver.findElement(By.cssSelector(".output h2 span")).getText();
-        Assert.assertEquals("you clicked " + button.toLowerCase(), actualMessage);
+        clickButton(button);
+        Assert.assertEquals("you clicked " + button.toLowerCase(), getMessage());
 
         //html/body/div/div[1]/div/button[2]
         ///html/body/div[1]/div[4]/div/div/h2/span
@@ -38,9 +37,7 @@ public class XpathTrainingTest extends TestBase {
         String message = "Eva Slezakova";
         driver.findElement(By.cssSelector("input")).sendKeys(message);
         driver.findElement(By.id("hitme")).click();
-
-        String actualMessage = driver.findElement(By.cssSelector(".output h2 span")).getText();
-        Assert.assertEquals("you entered " + message.toLowerCase(), actualMessage);
+        Assert.assertEquals("you entered " + message.toLowerCase(), getMessage());
     }
 
     @Test
@@ -49,12 +46,11 @@ public class XpathTrainingTest extends TestBase {
         String[] buttonSelect = {"First one", "Second button", "Next button", "One more button", "Danger",
                 "Success", "Warning", "Hit me!"};
         for (String s : buttonSelect) {
-            driver.findElement(By.xpath("//button[contains(text(),'" + s + "')]")).click();
-            String actualMessage = driver.findElement(By.cssSelector(".output h2 span")).getText();
+            clickButton(s);
             if (s.equals("Hit me!")) {
-                Assert.assertEquals("you entered", actualMessage);
+                Assert.assertEquals("you entered", getMessage());
             } else {
-                Assert.assertEquals(message + s.toLowerCase(), actualMessage);
+                Assert.assertEquals(message + s.toLowerCase(), getMessage());
             }
         }
     }
@@ -63,30 +59,42 @@ public class XpathTrainingTest extends TestBase {
     public void itShouldChooseEachValueSelectOne() {
         String message = "you have chosen moznost ";
         WebElement valueSelect = driver.findElement(By.xpath("//select[1]"));
-        WebElement messageFinder = driver.findElement(By.cssSelector(".output h2 span"));
-        for (int i = 1; i < 7; i++) {
-            new Select(valueSelect).selectByIndex(i);
-            String actualMessage = messageFinder.getText();
-            Assert.assertEquals(message + i, actualMessage);
-        }
+
+        selectLoop(valueSelect, message);
+
         String optionZero = "vyber si moznost";
-        new Select(valueSelect).selectByVisibleText(optionZero);
-        Assert.assertEquals("you have chosen " + optionZero, messageFinder.getText());
+        selectZero(optionZero, valueSelect);
     }
 
     @Test
     public void itShouldChooseEachValueSelectTwo() {
-        String message = "you have chosen option ";
+        String message = chosen + "option ";
         WebElement valueSelect = driver.findElement(By.xpath("//select[2]"));
-        WebElement messageFinder = driver.findElement(By.cssSelector(".output h2 span"));
+
+        selectLoop(valueSelect, message);
+
+        String optionZero = "vyber si option";
+        selectZero(optionZero, valueSelect);
+    }
+
+    private void clickButton(String s){
+        driver.findElement(By.xpath("//button[contains(text(),'" + s + "')]")).click();
+    }
+
+    private String getMessage(){
+        return driver.findElement(By.cssSelector(".output h2 span")).getText();
+    }
+
+    private void selectLoop(WebElement valueSelect, String message){
         for (int i = 1; i < 6; i++) {
             new Select(valueSelect).selectByIndex(i);
-            String actualMessage = messageFinder.getText();
-            Assert.assertEquals(message + i, actualMessage);
+            Assert.assertEquals(message + i, getMessage());
         }
-        String optionZero = "vyber si option";
-        new Select(valueSelect).selectByVisibleText(optionZero);
-        Assert.assertEquals("you have chosen " + optionZero, messageFinder.getText());
     }
+
+    private void selectZero(String optionZero, WebElement valueSelect){
+        new Select(valueSelect).selectByVisibleText(optionZero);
+        Assert.assertEquals(chosen + optionZero, getMessage());
+        }
 
 }
