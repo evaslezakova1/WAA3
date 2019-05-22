@@ -4,15 +4,16 @@ import base.TestBase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
+import pages.PokemonPage;
 
 public class PokemonTest extends TestBase {
+
+    private PokemonPage pokPage;
 
     @Before
     public void openPage() {
         driver.get(BASE_URL + "/vybersi.php");
+        pokPage = new PokemonPage(driver);
     }
 
     @Test
@@ -23,21 +24,10 @@ public class PokemonTest extends TestBase {
         //skratka je "iter" + tab
         for (String pokemon : selectedPokemons) {
             //vyberiem Pokemona
-            selectPokemon(pokemon);
-            Assert.assertEquals(getExpectedMessage(pokemon), getActualMessage());
+            pokPage.selectPokemon(pokemon);
+            Assert.assertEquals(pokPage.getExpectedMessage(pokemon), pokPage.getActualMessage());
         }
     }
 
-    private void selectPokemon(String pokemonToSelect) {
-        WebElement pokemonSelect = driver.findElement(By.cssSelector("select"));
-        new Select(pokemonSelect).selectByVisibleText(pokemonToSelect);
-    }
 
-    private String getActualMessage(){
-        return driver.findElement(By.cssSelector("div.pokemon h3")).getText();
-    }
-
-    private String getExpectedMessage(String pokemonName){
-       return "I choose you " + pokemonName + " !";
-    }
 }

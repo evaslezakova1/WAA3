@@ -6,14 +6,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import pages.RandomPage;
 
 import java.util.List;
 
 public class RandomTableTest extends TestBase {
 
+    private RandomPage rndPage;
+
     @Before
     public void openPage() {
         driver.get(BASE_URL + "/tabulka.php");
+        rndPage = new RandomPage(driver);
     }
 
     @Test
@@ -26,9 +30,8 @@ public class RandomTableTest extends TestBase {
 
     @Test
     public void listOfAllRowInTable() {
-        for (WebElement tableRow : returnList()) {
+        for (WebElement tableRow : rndPage.returnList()) {
             Assert.assertFalse(tableRow.getText().isEmpty());
-
         }
     }
 
@@ -38,13 +41,11 @@ public class RandomTableTest extends TestBase {
 //        for (WebElement tableRow : tableRows) {
 //            Assert.assertFalse(tableRow.getText().isEmpty());
 //        }
-        List<WebElement> tableRows = returnList();
+        List<WebElement> tableRows = rndPage.returnList();
         for (WebElement tableRow : tableRows) {
             Assert.assertFalse(tableRow.findElement(By.xpath("//td[2]")).getText().isEmpty());
         }
     }
 
-    private List<WebElement> returnList() {
-        return driver.findElements(By.cssSelector("table tbody tr"));
-    }
+
 }
