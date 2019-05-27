@@ -1,9 +1,11 @@
 package pages;
 
+import models.Note;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import java.sql.Timestamp;
 
@@ -15,10 +17,14 @@ public class OdkazovacPage {
         this.pageDriver = driver;
     }
 
-    public void enterNoteData(String title, String author, String body) {
-        pageDriver.findElement(By.xpath("//input[1]")).sendKeys(title);
-        pageDriver.findElement(By.xpath("//input[2]")).sendKeys(author);
-        pageDriver.findElement(By.xpath("//textarea")).sendKeys(body);
+    public void enterNoteData(Note note) {
+        titleInput(note.getTitle(), "//input[1]");
+        titleInput(note.getAuthor(), "//input[2]");
+        titleInput(note.getMessage(), "//textarea");
+    }
+
+    private void titleInput(String title, String s) {
+        pageDriver.findElement(By.xpath(s)).sendKeys(title);
     }
 
     public void submitNote() {
@@ -63,5 +69,9 @@ public class OdkazovacPage {
     public String titleWithTimestamp() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return "Titulok s Hashtaghmi " + timestamp;
+    }
+
+    public String pocetOdkazov() {
+        return pageDriver.findElement(By.cssSelector("h3.sin-header span")).getText();
     }
 }

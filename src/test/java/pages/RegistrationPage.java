@@ -29,4 +29,8 @@ public class RegistrationPage {
         Fairy fairy = Fairy.create();
         return fairy.person();
     }
+
+    public void sendLoginData(String email, String email2) {
+        pageDriver.findElement(By.name(email)).sendKeys(email2);
+    }
 }

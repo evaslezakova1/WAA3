@@ -18,6 +18,7 @@ public class GosslingatorTest extends TestBase {
 
     @Test
     public void itShouldAddOneRyan() {
+
         //3. kliknut na tlacidlo pridat
         // - v prvej casti si najdem element a v druhej zadam prikaz
         gossPage.addRyan();

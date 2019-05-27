@@ -24,7 +24,6 @@ public class ZenaAleboMuz extends TestBase {
         //input[@value='Wurst']
         //label[text()='Zena']/input
         //ctrl+d skopiruje cely riadok
-
         //vyberie muz a otestuje hlasku Its wurst
         //zaroven otestujte, ze zena ostala nevybrata
         conPage.clickOnMan();

@@ -3,9 +3,9 @@ package tests;
 import base.TestBase;
 import com.devskiller.jfairy.Fairy;
 import com.devskiller.jfairy.producer.person.Person;
+import models.Note;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import pages.OdkazovacPage;
 
 public class OdkazovacTest extends TestBase {
@@ -20,14 +20,15 @@ public class OdkazovacTest extends TestBase {
 
     @Test
     public void itShouldAddNewMessage() throws InterruptedException {
-        int pocetOdkazov = Integer.valueOf(driver.findElement(By.cssSelector("h3.sin-header span")).getText());
+        int pocetOdkazov = Integer.valueOf(odkPage.pocetOdkazov());
         Fairy fairy = Fairy.create();
         Person person = fairy.person();
         String title = odkPage.titleWithTimestamp();
         String author = person.getFirstName() + " " + person.getLastName();
         String body = "Sem by isiel text";
 
-        odkPage.enterNoteData(title, author, body);
+        Note noteToAdd = new Note(title, author, body);
+        odkPage.enterNoteData(noteToAdd);
         odkPage.submitNote();
 
         //ul.list-of-sins li:last-child
@@ -41,23 +42,27 @@ public class OdkazovacTest extends TestBase {
 
     @Test
     public void itShouldAddNewMessageWithHashtaghs() throws InterruptedException {
-        int pocetOdkazov = Integer.valueOf(driver.findElement(By.cssSelector("h3.sin-header span")).getText());
+        int pocetOdkazov = Integer.valueOf(odkPage.pocetOdkazov());
+
         String title = odkPage.titleWithTimestamp();
         Fairy fairy = Fairy.create();
         Person person = fairy.person();
         String author = person.getFirstName() + " " + person.getLastName();
         String body = "Sem by isiel text pre hestegove spravy";
 
-        odkPage.enterNoteData(title, author, body);
+        Note noteToAdd = new Note(title, author, body);
+        odkPage.enterNoteData(noteToAdd);
         odkPage.addTags();
         odkPage.submitNote();
-        odkPage.checkNoteInList(title, pocetOdkazov);
+        odkPage.checkNoteInList(noteToAdd.getTitle(), pocetOdkazov);
         odkPage.getLastNoteFromList().click();
         //overim detail zaznamu
         Thread.sleep(1000);
-        odkPage.checkNoteDetail(title, author, body);
+        odkPage.checkNoteDetail(noteToAdd.getTitle(), noteToAdd.getAuthor(), noteToAdd.getMessage());
 
     }
+
+
 }
 
 

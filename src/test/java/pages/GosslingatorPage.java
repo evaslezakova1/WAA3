@@ -3,13 +3,22 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class GosslingatorPage {
+
+    @FindBy(id = "addRyan")
+    private WebElement addRyanButton;
+
+    @FindBy(css = "div.ryan-counter h3")
+    private WebElement ryanDescription;
 
     private WebDriver pageDriver;
 
     public GosslingatorPage(WebDriver driver){
         this.pageDriver = driver;
+        PageFactory.initElements(pageDriver, this);
     }
 
     //vytvaranie metod
@@ -17,8 +26,8 @@ public class GosslingatorPage {
     //void - metoda nevracia ziadnu hodnotu
 
     public void addRyan() {
-        WebElement ryanButton = pageDriver.findElement(By.id("addRyan"));
-        ryanButton.click();
+//        WebElement addRyanButton = pageDriver.findElement(By.id("addRyan"));
+        addRyanButton.click();
     }
 
     public String getRyanCounterNumber(){
@@ -30,7 +39,7 @@ public class GosslingatorPage {
     }
 
     public String getRyanTitleLable(){
-        return pageDriver.findElement(By.cssSelector("div.ryan-counter h3")).getText();
+        return ryanDescription.getText();
     }
 
     public int getNumberOfRyanImages(){

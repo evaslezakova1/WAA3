@@ -22,11 +22,11 @@ public class RegistrationTest extends TestBase {
     public void itShouldRegisterValid() {
         Person person = regPage.getPerson();
 
-        driver.findElement(By.name("email")).sendKeys(person.getEmail());
-        driver.findElement(By.name("name")).sendKeys(person.getFirstName());
-        driver.findElement(By.name("surname")).sendKeys(person.getLastName());
-        driver.findElement(By.name("password")).sendKeys(person.getPassword());
-        driver.findElement(By.name("password-repeat")).sendKeys(person.getPassword());
+        regPage.sendLoginData("email", person.getEmail());
+        regPage.sendLoginData("name", person.getFirstName());
+        regPage.sendLoginData("surname", person.getLastName());
+        regPage.sendLoginData("password", person.getPassword());
+        regPage.sendLoginData("password-repeat", person.getPassword());
         regPage.clickElementOnPage(By.id("checkbox"));
         regPage.clickElementOnPage(By.cssSelector(".btn-success"));
 
@@ -36,16 +36,14 @@ public class RegistrationTest extends TestBase {
                 regPage.getText());
     }
 
-
-
     @Test
     public void itShouldRegisterInvalid() {
         Person person = regPage.getPerson();
 
-        driver.findElement(By.name("email")).sendKeys(person.getEmail());
-        driver.findElement(By.name("name")).sendKeys(person.getFirstName());
-        driver.findElement(By.name("surname")).sendKeys(person.getLastName());
-        driver.findElement(By.name("password")).sendKeys(person.getPassword());
+        regPage.sendLoginData("email", person.getEmail());
+        regPage.sendLoginData("name", person.getFirstName());
+        regPage.sendLoginData("surname", person.getLastName());
+        regPage.sendLoginData("password", person.getPassword());
         regPage.clickElementOnPage(By.id("checkbox"));
         regPage.clickElementOnPage(By.cssSelector(".btn-success"));
 
