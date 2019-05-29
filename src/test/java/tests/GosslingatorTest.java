@@ -5,7 +5,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import pages.GosslingatorPage;
+import java.util.List;
 
 public class GosslingatorTest extends TestBase {
     private GosslingatorPage gossPage;
@@ -102,5 +104,17 @@ public class GosslingatorTest extends TestBase {
         // findElements najde vsetky elementy splnajuce podmienku a vypise ich do Listu
         // .size() je velkost zoznamu - kolko elementov je v Liste
         Assert.assertEquals(0, gossPage.getNumberOfRyanImages());
+    }
+
+    @Test
+    public void clickHim(){
+        for (int i = 0; i < 1; i++) {
+            gossPage.addRyan();
+        }
+
+        List<WebElement> ryans = driver.findElements(By.cssSelector("img"));
+        for (WebElement ryan : ryans) {
+            ryan.click();
+        }
     }
 }

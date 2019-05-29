@@ -6,6 +6,9 @@ import com.devskiller.jfairy.producer.person.Person;
 import models.Note;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.OdkazovacPage;
 
 public class OdkazovacTest extends TestBase {
@@ -19,7 +22,7 @@ public class OdkazovacTest extends TestBase {
     }
 
     @Test
-    public void itShouldAddNewMessage() throws InterruptedException {
+    public void itShouldAddNewMessage(){
         int pocetOdkazov = Integer.valueOf(odkPage.pocetOdkazov());
         Fairy fairy = Fairy.create();
         Person person = fairy.person();
@@ -35,13 +38,16 @@ public class OdkazovacTest extends TestBase {
         odkPage.checkNoteInList(title, pocetOdkazov);
         odkPage.getLastNoteFromList().click();
         //overim detail zaznamu
-        Thread.sleep(1000);
+
+        new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.content")));
+
 
         odkPage.checkNoteDetail(title, author, body);
     }
 
     @Test
-    public void itShouldAddNewMessageWithHashtaghs() throws InterruptedException {
+    public void itShouldAddNewMessageWithHashtaghs(){
         int pocetOdkazov = Integer.valueOf(odkPage.pocetOdkazov());
 
         String title = odkPage.titleWithTimestamp();
@@ -57,7 +63,10 @@ public class OdkazovacTest extends TestBase {
         odkPage.checkNoteInList(noteToAdd.getTitle(), pocetOdkazov);
         odkPage.getLastNoteFromList().click();
         //overim detail zaznamu
-        Thread.sleep(1000);
+
+        new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.content")));
+
         odkPage.checkNoteDetail(noteToAdd.getTitle(), noteToAdd.getAuthor(), noteToAdd.getMessage());
 
     }

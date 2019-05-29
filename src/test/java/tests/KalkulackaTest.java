@@ -3,7 +3,9 @@ package tests;
 import base.TestBase;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import pages.KalkulackaPage;
 
 public class KalkulackaTest extends TestBase {
@@ -54,6 +56,7 @@ public class KalkulackaTest extends TestBase {
         kalkPage.compareCountOfResults();
     }
 
+    @Ignore
     @Test
     public void itShouldMultiply() {
         String first = "10";
@@ -84,12 +87,14 @@ public class KalkulackaTest extends TestBase {
         int podiel = Integer.valueOf(first) / Integer.valueOf(second);
         String vysledok = first + "/" + second + " = " + podiel;
         int resultVysledok = Integer.valueOf(kalkPage.getResult());
-        Assert.assertEquals(podiel , resultVysledok);
+        Assert.assertEquals(podiel, resultVysledok);
 
         String zobrazenyVysledok = kalkPage.getZobrazenyVysledok();
 
         kalkPage.compareResults(vysledok, zobrazenyVysledok);
         kalkPage.compareCountOfResults();
+        //vytiahnutie hodnoty css
+        System.out.println(driver.findElement(By.id("firstInput")).getCssValue("color"));
     }
 
     @Test
@@ -104,9 +109,9 @@ public class KalkulackaTest extends TestBase {
         kalkPage.assertValuesAfterReset("secondInput");
         kalkPage.ifResultIsDisplayed();
 
+
+
     }
-
-
 
 
 }
