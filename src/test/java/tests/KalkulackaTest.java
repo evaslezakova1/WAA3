@@ -20,9 +20,9 @@ public class KalkulackaTest extends TestBase {
     public void itShouldCount() {
         String first = "2";
         String second = "3";
-        kalkPage.enterValue("firstInput", first);
-        kalkPage.enterValue("secondInput", second);
-        kalkPage.clickOnButton("count");
+        kalkPage.sendFirstInput(first);
+        kalkPage.sendSecondInput(second);
+        kalkPage.clickOnCount();
 
         int sucet = Integer.valueOf(first) + Integer.valueOf(second);
         String vysledok = first + "+" + second + " = " + sucet;
@@ -39,9 +39,9 @@ public class KalkulackaTest extends TestBase {
     public void itShouldDeduct() {
         String first = "10";
         String second = "3";
-        kalkPage.enterValue("firstInput", first);
-        kalkPage.enterValue("secondInput", second);
-        kalkPage.clickOnButton("deduct");
+        kalkPage.sendFirstInput(first);
+        kalkPage.sendSecondInput(second);
+        kalkPage.clickOnDeduct();
 
         int rozdiel = Integer.valueOf(first) - Integer.valueOf(second);
         String vysledok = first + "-" + second + " = " + rozdiel;
@@ -58,9 +58,9 @@ public class KalkulackaTest extends TestBase {
     public void itShouldMultiply() {
         String first = "10";
         String second = "3";
-        kalkPage.enterValue("firstInput", first);
-        kalkPage.enterValue("secondInput", second);
-        kalkPage.clickOnButton("multiply");
+        kalkPage.sendFirstInput(first);
+        kalkPage.sendSecondInput(second);
+        kalkPage.clickOnMultiply();
 
         int nasobok = Integer.valueOf(first) * Integer.valueOf(second);
         String vysledok = first + "x" + second + " = " + nasobok;
@@ -77,9 +77,9 @@ public class KalkulackaTest extends TestBase {
     public void itShouldDivide() {
         String first = "10";
         String second = "2";
-        kalkPage.enterValue("firstInput", first);
-        kalkPage.enterValue("secondInput", second);
-        kalkPage.clickOnButton("divide");
+        kalkPage.sendFirstInput(first);
+        kalkPage.sendSecondInput(second);
+        kalkPage.clickOnDivide();
 
         int podiel = Integer.valueOf(first) / Integer.valueOf(second);
         String vysledok = first + "/" + second + " = " + podiel;
@@ -96,9 +96,9 @@ public class KalkulackaTest extends TestBase {
     public void itShouldReset() {
         String first = "10";
         String second = "2";
-        kalkPage.enterValue("firstInput", first);
-        kalkPage.enterValue("secondInput", second);
-        kalkPage.clickOnButton("reset");
+        kalkPage.sendFirstInput(first);
+        kalkPage.sendSecondInput(second);
+        kalkPage.clickOnReset();
 
         kalkPage.assertValuesAfterReset("firstInput");
         kalkPage.assertValuesAfterReset("secondInput");

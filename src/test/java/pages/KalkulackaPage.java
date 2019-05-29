@@ -20,6 +20,30 @@ public class KalkulackaPage {
     @FindBy(id = "result")
     private WebElement findResult;
 
+    @FindBy(id = "firstInput")
+    private WebElement findFirstInput;
+
+    @FindBy(id = "secondInput")
+    private WebElement findSecondInput;
+
+    @FindBy(id = "reset")
+    private WebElement findReset;
+
+    @FindBy(id = "divide")
+    private WebElement findDivide;
+
+    @FindBy(id = "multiply")
+    private WebElement findMultiply;
+
+    @FindBy(id = "deduct")
+    private WebElement findDeduct;
+
+    @FindBy(id = "count")
+    private WebElement findCount;
+
+    @FindBy(xpath = "//div[2]/ul/li[last()]")
+    private WebElement displayedResult;
+
     public void ifResultIsDisplayed() {
         Assert.assertFalse(findResult.isDisplayed());
     }
@@ -29,7 +53,7 @@ public class KalkulackaPage {
     }
 
     public String getZobrazenyVysledok(){
-        return pageDriver.findElement(By.xpath("//div[2]/ul/li[last()]")).getText();
+        return displayedResult.getText();
     }
 
     public void compareResults(String vysledok, String zobrazenyVysledok){
@@ -52,12 +76,31 @@ public class KalkulackaPage {
         Assert.assertTrue(pageDriver.findElement(By.id(s)).getAttribute("value").isEmpty());
     }
 
-
-    public void enterValue(String s, String m) {
-        pageDriver.findElement(By.id(s)).sendKeys(m);
+    public void sendFirstInput(String s){
+        findFirstInput.sendKeys(s);
     }
 
-    public void clickOnButton(String s) {
-        pageDriver.findElement(By.id(s)).click();
+    public void sendSecondInput(String s){
+        findSecondInput.sendKeys(s);
+    }
+
+    public void clickOnReset(){
+        findReset.click();
+    }
+
+    public void clickOnDivide(){
+        findDivide.click();
+    }
+
+    public void clickOnMultiply(){
+        findMultiply.click();
+    }
+
+    public void clickOnDeduct(){
+        findDeduct.click();
+    }
+
+    public void clickOnCount(){
+        findCount.click();
     }
 }
