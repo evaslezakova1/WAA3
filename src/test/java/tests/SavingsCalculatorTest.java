@@ -38,8 +38,8 @@ public class SavingsCalculatorTest extends TestBase {
 
         for (String fundToSelect : selectedFund) {
             sCalcPage.selectFund(fundToSelect);
-            Assert.assertTrue(sCalcPage.totalIncomeAssert());
-            Assert.assertTrue(sCalcPage.interestIncomeAssert());
+            Assert.assertFalse(sCalcPage.totalIncomeAssert());
+            Assert.assertFalse(sCalcPage.interestIncomeAssert());
         }
     }
 
@@ -52,7 +52,7 @@ public class SavingsCalculatorTest extends TestBase {
 
         for (String fundToSelect : selectedFund) {
             sCalcPage.selectFund(fundToSelect);
-            Assert.assertTrue(sCalcPage.riskLevelAssert());
+            Assert.assertFalse(sCalcPage.riskLevelAssert());
         }
     }
 

@@ -61,15 +61,15 @@ public class SavingsCalculatorPage {
     }
 
     public boolean riskLevelAssert() {
-        return riskLevel.getAttribute("class").isEmpty();
+        return riskLevel.getText().isEmpty();
     }
 
     public boolean totalIncomeAssert() {
-        return totalIncome.getAttribute("class").isEmpty();
+        return totalIncome.getText().isEmpty();
     }
 
     public boolean interestIncomeAssert() {
-        return interestIncome.getAttribute("class").isEmpty();
+        return interestIncome.getText().isEmpty();
     }
 
     private Person getPerson() {
