@@ -25,7 +25,7 @@ public class SavingsCalculatorTest extends TestBase {
 
         for (String fundToSelect : selectedFund) {
             sCalcPage.selectFund(fundToSelect);
-            Assert.assertTrue(sCalcPage.isEnabled());
+            Assert.assertTrue(sCalcPage.buttonIsEnabled());
         }
     }
 

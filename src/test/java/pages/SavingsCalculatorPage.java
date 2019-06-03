@@ -1,5 +1,7 @@
 package pages;
 
+import com.devskiller.jfairy.Fairy;
+import com.devskiller.jfairy.producer.person.Person;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -46,11 +48,11 @@ public class SavingsCalculatorPage {
     @FindBy(css = ".recent-requests-header span")
     private WebElement numberOfEntries;
 
-    public String getNumberOfEntries(){
+    public String getNumberOfEntries() {
         return numberOfEntries.getText();
     }
 
-    public String getFundDescription(){
+    public String getFundDescription() {
         return fundDescription.getText();
     }
 
@@ -70,13 +72,18 @@ public class SavingsCalculatorPage {
         return interestIncome.getAttribute("class").isEmpty();
     }
 
+    private Person getPerson() {
+        Fairy fairy = Fairy.create();
+        return fairy.person();
+    }
+
     public void enterValues() {
         fundInput.sendKeys("1000");
         yearsInput.sendKeys("2");
-        emailInput.sendKeys("eva.sle@test.com");
+        emailInput.sendKeys(getPerson().getEmail());
     }
 
-    public boolean isEnabled() {
+    public boolean buttonIsEnabled() {
         return buttonApply.isEnabled();
     }
 
